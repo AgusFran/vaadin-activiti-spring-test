@@ -1,4 +1,4 @@
-package org.activiti;
+package hello;
 
 import org.springframework.stereotype.Component;
 

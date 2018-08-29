@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.BDDAssertions.*;
 
+import org.activiti.engine.RuntimeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,8 @@ import org.mockito.Mockito;
 public class MainViewTests {
 
 	@Autowired CustomerRepository repository;
-
+	@Autowired ApplicantRepository applicantRepo;
+	
 	VaadinRequest vaadinRequest = Mockito.mock(VaadinRequest.class);
 
 	CustomerEditor editor;
@@ -34,8 +36,8 @@ public class MainViewTests {
 
 	@Before
 	public void setup() {
-		this.editor = new CustomerEditor(this.repository);
-		this.mainView = new MainView(this.repository, editor);
+		this.editor = new CustomerEditor(this.repository, this.applicantRepo);
+		this.mainView = new MainView(repository, applicantRepo);
 	}
 
 	@Test

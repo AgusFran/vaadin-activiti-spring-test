@@ -14,8 +14,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import java.util.Collections;
 import java.util.Map;
 
-import org.activiti.Applicant;
-import org.activiti.ApplicantRepository;
 import org.activiti.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CustomerEditor extends VerticalLayout implements KeyNotifier {
 
 	private final CustomerRepository repository;
+	private final ApplicantRepository applicantRepo;
 
 	/**
 	 * The currently edited customer
@@ -52,16 +51,12 @@ public class CustomerEditor extends VerticalLayout implements KeyNotifier {
 	Binder<Customer> binder = new Binder<>(Customer.class);
 	private ChangeHandler changeHandler;
 
-    @Autowired
-	private ApplicantRepository applicantRepo;
 
-    @Autowired
-    private RuntimeService runtimeService;
 
 	@Autowired
-	public CustomerEditor(CustomerRepository repository) {
+	public CustomerEditor(CustomerRepository repository, ApplicantRepository applicantRepo) {
 		this.repository = repository;
-
+		this.applicantRepo = applicantRepo;
 		add(firstName, lastName, actions);
 
 		// bind using naming convention
@@ -126,7 +121,7 @@ public class CustomerEditor extends VerticalLayout implements KeyNotifier {
         applicantRepo.save(applicant);
 
         Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
-        runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
+//        runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
 	}
 
 	public void setChangeHandler(ChangeHandler h) {

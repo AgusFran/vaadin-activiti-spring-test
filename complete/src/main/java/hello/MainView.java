@@ -2,9 +2,6 @@ package hello;
 
 import java.util.Collection;
 
-import org.activiti.Applicant;
-import org.activiti.ApplicantRepository;
-import org.activiti.HireProcessRestController;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
@@ -24,14 +21,12 @@ import com.vaadin.flow.router.Route;
 
 @Route
 public class MainView extends VerticalLayout {
-	private static final long serialVersionUID = 1L;
-
-	private CustomerRepository customerRepo;
 	
-    @Autowired
-	private ApplicantRepository applicantRepo;
+	private final CustomerRepository customerRepo;
+	private final ApplicantRepository applicantRepo;
+//	private final RuntimeService runtimeService;
 
-	private final CustomerEditor editor;
+	private CustomerEditor editor;
 
 	final Grid<Customer> customerGrid;
 	final Grid<Applicant> applicantGrid;
@@ -40,13 +35,13 @@ public class MainView extends VerticalLayout {
 
 	private final Button addNewBtn;
 
-    @Autowired
-    private RuntimeService runtimeService;
 
 
-	public MainView(CustomerRepository repo, CustomerEditor editor) {
-		this.customerRepo = repo;
-		this.editor = editor;
+	public MainView(CustomerRepository customerRepo, ApplicantRepository applicantRepo) {
+		this.customerRepo = customerRepo;
+		this.applicantRepo = applicantRepo;
+//		this.runtimeService = runtimeService;
+		this.editor = new CustomerEditor(customerRepo, applicantRepo);
 		this.customerGrid = new Grid<>(Customer.class);
 		this.applicantGrid = new Grid<>(Applicant.class);
 		this.filter = new TextField();
@@ -83,21 +78,21 @@ public class MainView extends VerticalLayout {
 			editor.setVisible(false);
 			listCustomers(filter.getValue());
 		});
-		runtimeService.addEventListener(new ActivitiEventListener() {
-
-			@Override
-			public void onEvent(ActivitiEvent event) {
-				System.out.println("did i log something?");
-				listApplicants(null);
-			}
-
-			@Override
-			public boolean isFailOnException() {
-				System.out.println("it focking failed");
-				return false;
-			}
-				
-		}, ActivitiEventType.PROCESS_STARTED);
+//		runtimeService.addEventListener(new ActivitiEventListener() {
+//
+//			@Override
+//			public void onEvent(ActivitiEvent event) {
+//				System.out.println("did i log something?");
+//				listApplicants(null);
+//			}
+//
+//			@Override
+//			public boolean isFailOnException() {
+//				System.out.println("it focking failed");
+//				return false;
+//			}
+//				
+//		}, ActivitiEventType.PROCESS_STARTED);
 		
 		// Initialize listing
 		listCustomers(null);

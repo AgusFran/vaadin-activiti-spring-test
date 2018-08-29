@@ -1,5 +1,6 @@
 package hello;
 
+import org.activiti.engine.RuntimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner loadData(CustomerRepository repository) {
+	public CommandLineRunner loadData(CustomerRepository repository, ApplicantRepository applicantRepo) {
 		return (args) -> {
 			// save a couple of customers
 			repository.save(new Customer("Jack", "Bauer"));
